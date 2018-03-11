@@ -1,0 +1,10 @@
+pg_docker_service: postgres
+pg_docker_net_name: bridge
+pg_docker_bind_ip: 127.0.0.1
+#pg_docker_pass:
+
+pg_docker_dbs: []
+#  - {name: dbname}
+
+pg_docker_users: []
+#  - {name: username, pass: userpass, db: db, flags: CREATEDB,SUPERUSER}
