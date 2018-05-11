@@ -1,6 +1,9 @@
 pg_docker_service: postgres
 pg_docker_net_name: bridge
 pg_docker_bind_ip: 127.0.0.1
+pg_bind_port: 5432
+pg_int_port: 5432
+
 #pg_docker_pass:
 
 pg_docker_dbs: []
