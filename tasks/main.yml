@@ -11,7 +11,7 @@
       state: started
       restart_policy: unless-stopped
       image: 'postgres:10'
-      volumes: ['/srv/{{pg_docker_service}}:/var/lib/postgresql']
+      volumes: ['/srv/{{pg_docker_service}}/data:/var/lib/postgresql/data']
       purge_networks: yes
       networks:
         - {name: '{{pg_docker_net_name}}'}
@@ -22,7 +22,8 @@
     when: pg_docker_pass is defined
 
   - name: Wait container start
-    command: sleep 5
+    pause:
+      seconds: 5
 
   - postgresql_db:
       name: '{{item.name}}'
