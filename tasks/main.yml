@@ -1,8 +1,6 @@
 
-  - name: Installing postgres python adapter
-    pip:
-      name: psycopg2
 
+- block:
   - name: Installing Postgres container
     docker_container:
       name: '{{pg_docker_service}}'
@@ -19,28 +17,36 @@
         - '{{pg_docker_bind_ip}}:{{pg_bind_port}}:{{pg_int_port}}'
       env:
         POSTGRES_PASSWORD: '{{pg_docker_pass}}'
-    when: pg_docker_pass is defined
+
+  - name: Installing postgres python adapter
+    pip:
+      name: psycopg2
 
   - name: Wait container start
     pause:
       seconds: 5
 
   - postgresql_db:
-      name: '{{item.name}}'
+      name: '{{db.name}}'
       login_host: '{{pg_docker_bind_ip}}'
       login_user: postgres
       login_password: '{{pg_docker_pass}}'
     with_items: '{{pg_docker_dbs}}'
+    loop_control:
+      loop_var: db
     when: pg_docker_pass is defined
 
   - postgresql_user:
       login_host: '{{pg_docker_bind_ip}}'
       login_user: postgres
       login_password: '{{pg_docker_pass}}'
-      db: '{{item.db}}'
-      name: '{{item.name}}'
-      password: '{{"md5" + (item.pass + item.name)|hash("md5")}}'
+      db: '{{user_i.db}}'
+      name: '{{user_i.name}}'
+      password: '{{"md5" + (user_i.pass + user_i.name)|hash("md5")}}'
       encrypted: yes
       role_attr_flags: CREATEDB,SUPERUSER
     with_items: '{{pg_docker_users}}'
+    loop_control:
+      loop_var: user_i
     when: pg_docker_pass is defined
+  tags: ['potgres']
