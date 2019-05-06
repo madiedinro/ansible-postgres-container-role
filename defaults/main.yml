@@ -11,3 +11,4 @@ pg_docker_dbs: []
 
 pg_docker_users: []
 #  - {name: username, pass: userpass, db: db, flags: CREATEDB,SUPERUSER}
+pg_mem_limit: 500m

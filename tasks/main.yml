@@ -5,10 +5,12 @@
     docker_container:
       name: '{{pg_docker_service}}'
       hostname: '{{pg_docker_service}}'
-      recreate: no
+      # recreate: no
+      pull: yes
       state: started
       restart_policy: unless-stopped
-      image: 'postgres:10'
+      image: 'postgres:11'
+      memory: "{{pg_mem_limit}}"
       volumes: ['/srv/{{pg_docker_service}}/data:/var/lib/postgresql/data']
       purge_networks: yes
       networks:
